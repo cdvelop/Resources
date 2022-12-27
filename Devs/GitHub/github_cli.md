@@ -52,11 +52,13 @@ Press Enter to open github.com in your browser...
 8. se despliegan las siguientes paginas en su navegador
 
 ![](assets/ssh-code01.JPG)
-_escriba su código aquí_
+_escriba su código aquí y continue_
+
 ![](assets/ssh-code02.JPG)
-_autorice el cli_
+_autorice github cli_
+
 ![](assets/ssh-code03.JPG)
-_OK_
+_OK._
 
 
 9. nuestra salida de la consola sera algo asi

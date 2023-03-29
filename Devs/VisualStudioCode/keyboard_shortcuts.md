@@ -20,6 +20,7 @@
     
 * multi cursores
 	> **ctrl + alt + flecha**
+	> **ctrl + shift + l**
     
 * cerrar pestaña
 	> **ctrl + w**

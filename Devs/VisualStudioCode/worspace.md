@@ -1,4 +1,9 @@
 # Workspace Vsc
 
-### ubicación windows
->**%userprofile%\AppData\Roaming\Code\Workspaces\167XXXX**
+
+
+### Multi-root Workspaces 
+[espacios de trabajo multi raíz](https://code.visualstudio.com/docs/editor/multi-root-workspaces)
+
+
+

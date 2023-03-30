@@ -21,6 +21,9 @@
 ### ver todos los commit
 `git log`
 
+### ver commits en linea
+`git log --pretty=oneline`
+
 ---
 
 

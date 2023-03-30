@@ -89,8 +89,12 @@ ssh-add "C:\\Users\\<your user>/.ssh/id_rsa"
 
 ### Si lo ha intentado ssh-add y aún se le solicita que ingrese su frase de contraseña, intente usar ssh-add -K. Esto agrega su frase de contraseña a su llavero.
 
-### Lo que funcionó para mí en Windows fue (primero había clonado el código de un repositorio):
-
+---
+# No lo he probado
+> Lo que funcionó para mí en Windows fue (primero había clonado el código de un repositorio):
+```
 eval $(ssh-agent)
 ssh-add 
-git pull 
+git pull
+``` 
+[stackoverflow](https://stackoverflow.com/questions/10032461/git-keeps-asking-me-for-my-ssh-key-passphrase)

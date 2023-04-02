@@ -40,6 +40,9 @@
 * abrir cerrar terminal
 	> **ctrl + ñ**
 
+* cambiar entre terminales usar foco 
+	> **Ctrl Ñ + Ctrl + PageDown o Ctrl + PageUp**
+
 * cambiar carpeta terminal
 	> **ctrl + shift + ñ**
 

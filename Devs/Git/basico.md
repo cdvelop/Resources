@@ -54,9 +54,3 @@ git push -u origin main
 
 ### Borra todo. , absolutamente todo. Toda la información de los commits y del area de staging se borra del historial.
 `git reset --hard`
-
-### agregar tag version a un modulo: 
-`git tag -a V3.1.1 -m "Print en modulo medical history"`
-
-### ver tag (version): 
-`git tag`

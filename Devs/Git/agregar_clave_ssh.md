@@ -79,7 +79,7 @@ https://gist.github.com/jherax/979d052ad5759845028e6742d4e2343b
 ## ej:
 ssh-add
 
-## en caso de error: "Could not open a connection to your authentication agent."
+## en caso de error: "Could not open a Connection to your authentication agent."
 exec ssh-agent bash
 ## después ya puedes probar nuevamente
 

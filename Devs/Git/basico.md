@@ -1,5 +1,8 @@
 # Comandos Básicos Git
 
+### mas usado windows bash
+git add . && git commit -m "" && git tag v0.0.0 && git push && git push origin v0.0.0
+
 ### iniciar proyecto nuevo:
 `git init`
 

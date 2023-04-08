@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "streetsidesoftware.code-spell-checker-spanish"
+        "streetsidesoftware.code-spell-checker-spanish",
+        "ibm.output-colorizer"
     ]
 }

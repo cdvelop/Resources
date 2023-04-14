@@ -5,6 +5,9 @@ go get -u example.com/pkg
 ## Cómo actualizar a una versión específica usando módulos Go
 get foo@v1.6.2
 
+## obtener la ultima version
+go get foo@latest
+
 ## Cómo actualizar todas las dependencias a la vez
 go get -u ./...
 

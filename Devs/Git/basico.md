@@ -1,7 +1,10 @@
 # Comandos Básicos Git
 
 ### mas usado windows bash
-git add . && git commit -m "" && git tag v0.0.0 && git push && git push origin v0.0.0
+go get -t -u ./... && go mod tidy && git add . && git commit -m "XXX" && git tag v0.0.0 && git push && git push origin v0.0.0
+
+
+go get github.com/cdvelop/module@v0.0.0 && go get -t -u ./... && go mod tidy
 
 ### iniciar proyecto nuevo:
 `git init`

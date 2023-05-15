@@ -45,3 +45,6 @@ Este tutorial mostró cómo cambiar el nombre de etiquetas Git ligeras y anotada
 fuente:
 
 https://phoenixnap.com/kb/git-rename-tag
+
+
+

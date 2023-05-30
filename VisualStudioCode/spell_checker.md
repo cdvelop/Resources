@@ -12,7 +12,10 @@ en el archivo de configuración vsc se debe agregar los lenguajes que se necesit
         "go",
         "javascript",
         "markdown",
+        "shellscript",
     ],
 
 ```
+
+[listado de los identificadores de lenguajes (LanguageIds)](https://code.visualstudio.com/docs/languages/identifiers)
 

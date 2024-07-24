@@ -1,0 +1,1 @@
+"D:\Program Files\PuTTY\putty.exe" -ssh ubuntu@192.168.0.50 -pw "admin" -m 998-posgres.sh

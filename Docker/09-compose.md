@@ -3,6 +3,9 @@
 ## iniciar 
 docker-compose up
 
+## iniciar con un fichero determinado
+docker-compose -f nombre-del-fichero.yml up
+
 ## limpiar todo
 docker-compose down
 

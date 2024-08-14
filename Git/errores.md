@@ -28,3 +28,4 @@ El directorio seguro es una variable de varios valores, por lo que podemos agreg
 
 [fuente](https://medium.com/@thecodinganalyst/git-detect-dubious-ownership-in-repository-e7f33037a8f)
 
+

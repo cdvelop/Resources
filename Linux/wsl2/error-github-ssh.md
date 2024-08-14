@@ -71,7 +71,7 @@ git@github.com: Permission denied (publickey).
 ```
 - Este aviso aparece porque los permisos del archivo de tu clave privada (id_rsa) son demasiado abiertos, lo que significa que otros usuarios en el sistema podrían acceder a él. Para proteger tu clave privada, debes restringir los permisos del archivo
 
-VAMOS AQUI
+VAMOS AQUI nuevamente
 
 
 - Probar la conexión con GitHub:

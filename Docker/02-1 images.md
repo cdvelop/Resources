@@ -19,3 +19,9 @@ para solucionarlo indicamos la plataforma que necesitamos
 ## eliminar imágenes docker:
 `docker rmi <image_name>`
 - ej: `docker rmi python:3.9-alpine`
+
+## ver como fue creada una imagen docker
+`docker history <image_name>`
+- ej: `docker history python:3.9-alpine`
+
+Este comando muestra las capas de la imagen y los comandos utilizados para crearlas, proporcionando información sobre cómo se construyó la imagen.

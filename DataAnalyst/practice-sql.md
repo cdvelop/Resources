@@ -1,5 +1,3 @@
-
-
 # Plataformas de aprendizaje SQL interactivas:
 
 1. **SQLBolt**: (https://sqlbolt.com/)

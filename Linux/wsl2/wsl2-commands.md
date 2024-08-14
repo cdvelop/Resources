@@ -1,4 +1,4 @@
-# ver verciones de wsl
+# ver versiones de wsl
 wsl -l -v
 
 # ver distros instaladas
@@ -18,9 +18,6 @@ wsl --set-default Debian
 o
 wsl -s Debian
 
-# detener todas las distros
-wsl --shutdown
-
 # desinstalar una distro (elimina todos los datos)
 wsl --unregister Debian
 
@@ -33,3 +30,9 @@ wsl --import <NombreDistroACrear>
 ej:
 wsl --import Debian2 C:\Users\usuario\Distros\
 C:\Users\usuario\Desktop\debianNew.tar
+
+# detener todas las distros 
+wsl --shutdown
+
+# reiniciar wsl
+Restart-Service LxssManager

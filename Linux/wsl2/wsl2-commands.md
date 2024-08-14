@@ -31,8 +31,3 @@ ej:
 wsl --import Debian2 C:\Users\usuario\Distros\
 C:\Users\usuario\Desktop\debianNew.tar
 
-# detener todas las distros 
-wsl --shutdown
-
-# reiniciar wsl
-Restart-Service LxssManager

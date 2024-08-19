@@ -1,31 +1,18 @@
-# command_file.sh
+#!/bin/bash
 
-read -p "INGRESA NUEVO USUARIO:" USER_NAME
+# Prompt for new user details
+read -p "INGRESA NUEVO USUARIO: " USER_NAME
+read -s -p "INGRESA PASSWORD: " USER_PASSWORD
+echo
 
-read -p  "INGRESA PASSWORD:" USER_PASSWORD
-
-sudo useradd -p $(openssl passwd -1 $USER_PASSWORD) $USER_NAME
-
+# Create the new user
 echo "CREANDO USUARIO NUEVO"
-sudo adduser NEW_USER_NAME
+sudo useradd -m -p $(openssl passwd -1 "$USER_PASSWORD") "$USER_NAME"
 
-echo "AGREGANDO USUARIO A CRUPO SUDO"
-sudo usermod -aG sudo NEW_USER_NAME
-
-
-echo "ACTUALIZANDO SISTEMA"
-sudo apt update -y && sudo apt upgrade -y
-
-
-# echo "CAMBIAR AL USUARIO CREADO SALIENDO DE PUTY O"
-su - NEW_USER_NAME
+# Add the user to sudo group
+echo "AGREGANDO USUARIO A GRUPO SUDO"
+sudo usermod -aG sudo "$USER_NAME"
 
 
 
-
-
-
-
-
-
-
+echo "Usuario $USER_NAME creado exitosamente. Puede iniciar sesión con el nuevo usuario usando 'su - $USER_NAME'"

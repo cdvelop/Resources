@@ -31,5 +31,11 @@ Si la máquina no responde, puedes forzar el apagado:
 VBoxManage controlvm "Debian12" poweroff
 ```
 
+### - comprobar el estado de una máquina virtual
+
+Para verificar el estado de una máquina virtual si esta encendida o apagada:
+```bash
+VBoxManage showvminfo "Debian12" | grep State:
+```
 
 

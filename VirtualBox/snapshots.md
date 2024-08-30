@@ -17,7 +17,6 @@ Para restaurar una máquina virtual a una instantánea específica, utiliza:
 VBoxManage snapshot "Nombre_de_la_Maquina" restore "Nombre_de_la_Instantanea"
 ```
 
-
 ### - Listar snapshots de una máquina virtual
 Si tienes una máquina virtual llamada "Debian12":
 
@@ -25,7 +24,11 @@ Si tienes una máquina virtual llamada "Debian12":
 VBoxManage snapshot "Debian12" list
 ```
 
-para omitir la descripción y solo mostrar el nombre de la instantánea:
+para omitir la descripción,uui y solo mostrar el nombre de la instantánea:
 ```bash
 VBoxManage snapshot "Debian12" list | grep Name: | awk '{print $2}'
+
+# Explicación:
+# grep Name: - Filtra las líneas que contienen "Name:"
+# awk '{print $2}' - Imprime el segundo campo de cada línea
 ```

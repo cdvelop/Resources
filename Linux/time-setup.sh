@@ -1,3 +1,4 @@
+
 echo "verificar configuración actual de fecha y zona horaria"
 timedatectl
 

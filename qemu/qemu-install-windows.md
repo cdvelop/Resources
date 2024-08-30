@@ -25,7 +25,7 @@ qemu-system-x86_64.exe --version
 ![image](img/qemu-haxm-run.JPG). instale 
 
 si durante la instalacion aparece este mensaje de advertencia
-![image](img/qemu-haxm-warning.JPG)
+![image](img/qemu-haxm-info.JPG)
 
 8. verifique si el servicio esta en ejecución
 con el comando 

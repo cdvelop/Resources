@@ -34,3 +34,41 @@ Para asignar más recursos al proceso de FFmpeg en Windows y aprovechar mejor la
    Asegúrate de que no haya otros procesos intensivos en segundo plano que puedan estar utilizando recursos de la CPU. También, desactiva temporalmente el antivirus si es seguro hacerlo, ya que a veces los antivirus pueden ralentizar los procesos intensivos como FFmpeg.
 
 Al aplicar estas optimizaciones, deberías notar un uso más eficiente de tu CPU y una reducción en el tiempo de procesamiento.
+
+Para determinar cuántos hilos (`threads`) puedes asignar a FFmpeg en Windows, puedes seguir los siguientes pasos:
+
+### 1. **Determinar la cantidad de núcleos físicos y lógicos de la CPU:**
+
+- **Opción 1: Administrador de Tareas**
+   - Abre el **Administrador de Tareas** (Ctrl + Shift + Esc).
+   - Ve a la pestaña **Rendimiento**.
+   - En la sección **CPU**, verás la cantidad de **Núcleos** y **Procesadores lógicos**.
+   - **Núcleos** indica la cantidad de núcleos físicos.
+   - **Procesadores lógicos** indica el número total de hilos (threads) que tu CPU puede manejar simultáneamente. Este número es lo máximo que puedes usar con FFmpeg.
+
+- **Opción 2: Símbolo del Sistema**
+   - Abre el **Símbolo del sistema** (cmd).
+   - Ejecuta el siguiente comando:
+
+     ```cmd
+     wmic cpu get NumberOfCores,NumberOfLogicalProcessors
+     ```
+
+   - El resultado te mostrará dos columnas:
+     - **NumberOfCores**: Cantidad de núcleos físicos.
+     - **NumberOfLogicalProcessors**: Cantidad de procesadores lógicos (hilos).
+
+### 2. **Configurar FFmpeg con el número de hilos:**
+
+   Una vez que sepas cuántos procesadores lógicos tiene tu CPU, puedes asignar ese número a FFmpeg utilizando el parámetro `-threads`. Por ejemplo, si tu CPU tiene 8 procesadores lógicos, puedes usar:
+
+   ```bash
+   ffmpeg -threads 8 -i input.mkv -map 0 -c:v copy -c:a aac -ar 48000 -b:a 192k -metadata:s:a:0 language=spa -metadata:s:a:1 language=eng output.mkv
+   ```
+
+### 3. **Consideraciones al elegir el número de hilos:**
+
+- **Máximo rendimiento**: Usar el número total de procesadores lógicos de tu CPU debería proporcionar el máximo rendimiento.
+- **Balance**: Si necesitas usar tu computadora para otras tareas mientras FFmpeg está corriendo, podrías usar un número menor de hilos para dejar recursos disponibles para otras aplicaciones. Por ejemplo, si tienes 8 hilos disponibles, podrías usar 6 para FFmpeg y dejar 2 para el resto del sistema.
+
+Usar un número adecuado de hilos puede acelerar significativamente el procesamiento de video y audio, aprovechando al máximo tu hardware.

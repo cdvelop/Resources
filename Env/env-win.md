@@ -9,3 +9,7 @@ Process to refresh environment variables without reboot Windows:
 
 4. Test by running:
    echo %PATH%
+
+   more info:
+   https://phoenixnap.com/kb/windows-set-environment-variable
+   

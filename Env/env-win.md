@@ -1,4 +1,16 @@
+
+
+
 Process to refresh environment variables without reboot Windows:
+
+Set Environment Variable in Windows via Command Prompt
+
+setx [variable_name] "[variable_value]"
+
+setx Test_variable "Variable value"
+
+
+
 
 1. Open CMD command prompt window
 

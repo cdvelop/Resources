@@ -1,27 +1,22 @@
 
-
+para ver las variables de entorno:
+```powershell
+echo $Env:[variable_name]
+```
 
 Process to refresh environment variables without reboot Windows:
-
-Set Environment Variable in Windows via Command Prompt
-
-setx [variable_name] "[variable_value]"
-
+Set variable de entorno Command Prompt CMD setx [variable_name] "[variable_value]"
+```cmd
 setx Test_variable "Variable value"
+```
+ver la variables:
+set
+Por ejemplo, si has creado una variable llamada Test_variable, usarías:
+   echo %Test_variable%
+
+Esto mostrará el valor de la variable que has establecido.
 
 
-
-
-1. Open CMD command prompt window
-
-2. Input command:
-   set PATH=C
-
-3. Close and restart CMD window
-
-4. Test by running:
-   echo %PATH%
-
-   more info:
-   https://phoenixnap.com/kb/windows-set-environment-variable
+more info:
+https://phoenixnap.com/kb/windows-set-environment-variable
    

@@ -33,5 +33,6 @@ CMD ["node","home/app/04-index.js"]]
 # Para ejecutar un archivo Docker con un nombre diferente, usa el flag -f:
 # docker build -f <nombre_del_archivo> -t <nombre_de_la_imagen> .
 # Ejemplo:
-# docker build -f MiDockerfile -t mi-imagen:latest .
-
+```bash
+docker build -f MiDockerfile -t mi-imagen:latest .
+```

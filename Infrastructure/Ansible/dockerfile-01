@@ -1,0 +1,36 @@
+# image de 185MB 
+# Usamos la imagen base de Alpine 3.18
+FROM alpine:3.18 AS builder
+
+# Instalar dependencias necesarias para la construcción
+RUN apk add --no-cache python3 py3-pip libffi openssl ca-certificates \
+    gcc python3-dev musl-dev libffi-dev openssl-dev
+
+# Instalar pipx y ansible-core
+RUN python3 -m ensurepip \
+    && pip3 install --no-cache --upgrade pip wheel \
+    && pip3 install --no-cache pipx \
+    && pipx install ansible-core==2.15
+
+# Imagen final
+FROM alpine:3.18
+
+# Copiar los archivos necesarios desde la etapa de construcción
+COPY --from=builder /root/.local /root/.local
+COPY --from=builder /usr/lib/python3.11 /usr/lib/python3.11
+COPY --from=builder /usr/bin/python3 /usr/bin/python3
+
+# Instalar solo las dependencias de tiempo de ejecución necesarias
+RUN apk add --no-cache libffi openssl ca-certificates
+
+# Configurar el PATH para pipx
+ENV PATH=/root/.local/bin:$PATH
+
+# Crear directorio para volúmenes
+VOLUME ["/ansible-books"]
+
+# Establecer el directorio de trabajo
+WORKDIR /ansible-books
+
+# Comando predeterminado
+CMD ["ansible", "--version"]

@@ -2,6 +2,8 @@
 
 [Pagina descarga cli.github.com](https://cli.github.com/)
 
+[![tutorial basico](https://img.youtube.com/vi/oZRFOkLUZdk&ab/0.jpg)](https://www.youtube.com/watch?v=oZRFOkLUZdk&ab)
+
 
 [![Instalación YouTube](https://img.youtube.com/vi/BsWGjeUTmUc/0.jpg)](https://www.youtube.com/watch?v=BsWGjeUTmUc)
 _el video muestra la configuración es a traves del protocolo **https**

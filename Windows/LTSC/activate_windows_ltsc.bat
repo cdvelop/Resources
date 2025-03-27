@@ -1,41 +1,41 @@
 @echo off
-echo # Solucion Windows 10 LTSC se apaga cada 1 hora si no se activa
-echo El S.O. Es Una Version De Prueba/Evaluacion Por Lo Cual Es Muy Importante
-echo Introducir Todos Estos Comandos Para Que El Sistema Operativo Este Estable Y
-echo Funcional Para Su Correcto Funcionamiento. >> log.txt 2>&1
-echo Iniciando el script de activacion de Windows LTSC... >> log.txt 2>&1
-date /t >> log.txt 2>&1
-time /t >> log.txt 2>&1
+echo Script para activar Windows 10 LTSC 2021
+echo.
 
-rem set script_state_file=C:\Windows\Temp\activate_windows_ltsc_state.txt
+echo Paso 1: Copiando contenido de SKUS.zip a la carpeta de tokens...
+echo Necesita descargar el fichero SKUS.zip del repositorio github.com/cdvelop/Notes/Windows/LTSC/SKUS.zip y colocarlo en el mismo directorio que este script.
+pause
+if not exist SKUS.zip (
+    echo Error: No se encontro el archivo SKUS.zip. Por favor, descarguelo y coloque en este directorio.
+    pause
+    exit /b
+)
+echo Extrayendo SKUS.zip...
+powershell -Command "Expand-Archive -Path 'SKUS.zip' -DestinationPath 'C:\Windows\System32\spp\tokens\skus' -Force"
 
-rem :getState
-rem if not exist %script_state_file% (
-rem     echo 0 > %script_state_file%
-rem )
-rem set /p script_state=<%script_state_file%
-rem goto :eof
+echo.
+echo Paso 2: Reiniciando el PC...
+echo Por favor, reinicie el PC manualmente.
+pause
 
-rem :setState
-rem echo %~1 > %script_state_file%
-rem goto :eof
+echo.
+echo Paso 3: Ejecutando comandos CMD como administrador...
+cscript.exe %windir%\system32\slmgr.vbs /rilc
+cscript.exe %windir%\system32\slmgr.vbs /upk >nul 2>&1
+cscript.exe %windir%\system32\slmgr.vbs /ckms >nul 2>&1
+cscript.exe %windir%\system32\slmgr.vbs /cpky >nul 2>&1
+cscript.exe %windir%\system32\slmgr.vbs /ipk M7XTQ-FN8P6-TTKYV-9D4CC-J462D
+sc config LicenseManager start= auto & net start LicenseManager
+sc config wuauserv start= auto & net start wuauserv
+clipup -v -o -altto c:\
+echo.
 
-rem call :getState
+echo Paso 4: Ejecutando comando PowerShell como administrador...
+powershell -Command "irm https://get.activated.win | iex"
 
-rem if "%script_state%"=="1" goto :step2
-rem if "%script_state%"=="2" goto :step3
-rem if "%script_state%"=="3" goto :step4
-rem if "%script_state%"=="4" goto :step5
-
-:step1
-echo. >> log.txt 2>&1
-echo ## Step 1: copiar todo el contenido del zip SKUS.zip a la carpeta de: >> log.txt 2>&1
-echo C:\Windows\System32\spp\tokens\skus >> log.txt 2>&1
-echo. >> log.txt 2>&1
-
-echo Downloading SKUS.zip to temporary directory... >> log.txt 2>&1
-curl -L -o "%TEMP%\SKUS.zip" https://github.com/cdvelop/Notes/raw/main/Windows/LTSC/SKUS.zip >> log.txt 2>&1
-if %errorlevel% neq 0 (
+echo.
+echo Proceso completado.
+pause
     echo Error downloading SKUS.zip to temporary directory. Please check your internet connection and try again. >> log.txt 2>&1
     echo Error downloading SKUS.zip to temporary directory. Please check your internet connection and try again.
     echo Error en el paso 1 >> log.txt 2>&1

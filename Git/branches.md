@@ -42,3 +42,36 @@ git push -u origin new_feature
 
 6. borrar rama new_feature local
     - `git branch -d new_feature`
+
+## renombrar rama
+
+### 1. **Si ya estás en la rama que quieres renombrar**
+Ejecuta lo siguiente en tu terminal:
+```sh
+git branch -m nuevo-nombre
+```
+Esto renombrará la rama actual al `nuevo-nombre`.
+
+### 2. **Si NO estás en la rama que quieres renombrar**
+Si deseas renombrar otra rama sin cambiar a ella, usa:
+```sh
+git branch -m antiguo-nombre nuevo-nombre
+```
+
+### 3. **Actualizar el branch en el repositorio remoto**
+Si la rama ya está en el remoto y quieres reflejar el cambio:
+```sh
+git push origin -u nuevo-nombre
+git push origin --delete antiguo-nombre  # Eliminar la versión anterior en remoto
+```
+
+### 4. **Actualizar referencias en otros clones del repositorio**
+Si otros han clonado el repositorio, deben ejecutar:
+```sh
+git fetch origin
+git checkout nuevo-nombre
+git branch --unset-upstream
+git branch -u origin/nuevo-nombre
+```
+
+Así, la referencia local se actualizará con la nueva rama en el remoto. 🚀

@@ -1,7 +1,7 @@
 
 para ver las variables de entorno:
 ```powershell
-echo $Env:[variable_name]
+echo %variable_name%
 ```
 
 Process to refresh environment variables without reboot Windows:

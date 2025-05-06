@@ -40,5 +40,12 @@ Si los pasos anteriores no resuelven el problema, intenta limpiar la caché de l
     *   Se abrirá una ventana del símbolo del sistema que se cerrará automáticamente una vez que la caché se haya limpiado. La Microsoft Store debería abrirse después de este proceso.
 
 ---
+
+## si aparece el error microsoft store no esta disponible en tu pais o region
+- ve a Selecciona Inicio  > Configuración  > Hora e idioma > Región. y cambia a Estados Unidos
+
+vuelve a iniciar
+
+
 <small>Este método se basa en el trabajo y las contribuciones de la comunidad. El script original `Add-Store.cmd` y la solución general fueron popularizados por discusiones en foros como My Digital Life, con contribuciones de usuarios como abbodi1406.</small>
 <small>Fuente original de la discusión y script (por abbodi1406): [My Digital Life Forums](https://forums.mydigitallife.net/threads/add-store-to-windows-10-enterprise-ltsc-LTSC.70741/page-30#post-1468779)</small>

@@ -79,13 +79,41 @@ La salida confirmó que los controladores de NVIDIA y las librerías asociadas e
 
 El problema principal es que los módulos del kernel de NVIDIA no se están cargando correctamente durante el arranque del sistema. Esto provoca que el sistema operativo no pueda gestionar correctamente la GPU de NVIDIA, lo que resulta en la pantalla negra después de la suspensión y la falta de señal en la salida HDMI.
 
-## Pasos para la Solución
+## Solución
 
-A continuación se intentarán los siguientes pasos para solucionar el problema:
+### 1. Verificar y Desactivar Secure Boot (Causa Raíz)
 
-### 1. Reinstalación de los Controladores de NVIDIA
+La causa más común para que los módulos del kernel de NVIDIA no se carguen en sistemas Linux es que la opción **Secure Boot** esté activada en la BIOS/UEFI. Esta característica de seguridad impide la carga de módulos o controladores que no estén firmados digitalmente por una autoridad reconocida, como es el caso de los módulos de NVIDIA que se compilan localmente.
 
-Se reinstalarán los controladores de NVIDIA para asegurar que los módulos del kernel se construyan e instalen correctamente.
+**a. Comprobar el estado de Secure Boot:**
+
+El primer paso es verificar si Secure Boot está activado.
+
+```bash
+mokutil --sb-state
+```
+
+En este caso, el resultado fue:
+
+```
+SecureBoot enabled
+```
+
+Esto confirmó que Secure Boot era la causa del problema.
+
+**b. Desactivar Secure Boot en la BIOS/UEFI:**
+
+La solución definitiva es reiniciar el equipo y acceder a la configuración de la BIOS/UEFI para desactivar esta opción.
+
+1.  **Reiniciar el portátil.**
+2.  **Acceder a la configuración de la BIOS/UEFI** (generalmente pulsando **F10**, **Esc** o **F2** durante el arranque en equipos HP).
+3.  **Navegar a la sección "Boot Options", "Security" o "System Configuration".**
+4.  **Desactivar la opción "Secure Boot".**
+5.  **Guardar los cambios y reiniciar.**
+
+### 2. Reinstalación de los Controladores de NVIDIA (Paso Opcional)
+
+Si desactivar Secure Boot no resolviera el problema, el siguiente paso sería realizar una reinstalación limpia de los controladores para descartar una instalación corrupta. En este caso, este paso se intentó primero sin éxito, pero se documenta aquí como una posible solución secundaria.
 
 **a. Purgar los controladores existentes:**
 
@@ -102,8 +130,40 @@ sudo apt-get install nvidia-driver firmware-nvidia-gsp
 
 **c. Reiniciar el sistema:**
 
-Después de la instalación, es necesario reiniciar el sistema para que los nuevos módulos del kernel se carguen.
-
 ```bash
 sudo reboot
 ```
+
+## Verificación Post-Solución
+
+Después de reiniciar con Secure Boot desactivado, se verificó que los módulos de NVIDIA se cargaran correctamente:
+
+```bash
+lsmod | grep nvidia
+```
+
+La salida del comando mostró que los módulos `nvidia_drm`, `nvidia_modeset` y `nvidia` estaban cargados, confirmando la solución del problema principal.
+
+## Problemas Secundarios y Soluciones
+
+### Corrupción del Perfil de Microsoft Edge
+
+Debido a los apagados forzados, el perfil de Microsoft Edge se corrompió, impidiendo que el navegador se iniciara.
+
+**a. Diagnóstico (vía terminal):**
+
+```bash
+microsoft-edge
+```
+
+El error indicaba que el perfil estaba bloqueado (`This profile appears to be in use...`).
+
+**b. Solución:**
+
+Se eliminaron los archivos de bloqueo del perfil:
+
+```bash
+rm -f /home/cesar/.config/microsoft-edge/Singleton*
+```
+
+Tras eliminar estos archivos, Microsoft Edge se inició correctamente.

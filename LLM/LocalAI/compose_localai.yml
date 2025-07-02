@@ -1,0 +1,32 @@
+services:
+  localai:
+    image: localai/localai:latest-gpu-nvidia-cuda-12
+    container_name: local-ai
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - DEBUG=true
+      - MODELS_PATH=/models
+    volumes:
+      - IA_DOCKER_MODELS:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/readyz"]
+      interval: 1m
+      timeout: 10m
+      retries: 5
+
+volumes:
+  IA_DOCKER_MODELS:
+    driver: local
+    driver_opts:
+      type: none
+      device: /c/Users/YOUR_USER/Downloads/IA_DOCKER_MODELS
+      o: bind

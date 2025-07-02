@@ -29,15 +29,20 @@ sudo apt install qemu-kvm libvirt-clients libvirt-daemon libvirt-daemon-system b
 ### 4. Verificar y activar el servicio de libvirt
 ```bash
 sudo systemctl status libvirtd.service
+# si no está activo ejecutar:
 sudo systemctl enable libvirtd.service
+# después iniciar el servicio
 sudo systemctl start libvirtd.service
 ```
 
 ### 5. Enumerar y activar redes para máquinas virtuales
 ```bash
-sudo virsh net-list --all
-sudo virsh net-start default
-sudo virsh net-autostart default
+# Muestra todas las redes virtuales disponibles
+sudo virsh net-list --all        
+# Inicia la red 'default' si no está activa
+sudo virsh net-start default     
+# Hace que la red 'default' se inicie automáticamente con el sistema
+sudo virsh net-autostart default 
 ```
 
 ### 6. Añadir tu usuario a los grupos necesarios

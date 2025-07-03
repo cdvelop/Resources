@@ -4,7 +4,7 @@
 
 | Característica | Valor                                       |
 | :--------------- | :------------------------------------------ |
-| **Usuario**      | `cesar@laptop`                           |
+| **Usuario**      | `cesar@cs-laptop`                           |
 | **SO**           | Debian GNU/Linux 12 (bookworm) x86_64       |
 | **Host**         | Victus by HP Laptop 16-d0xxx                |
 | **Kernel**       | 6.1.0-37-amd64                              |
@@ -189,47 +189,6 @@ systemctl suspend
 La actualización de la BIOS a la versión F.29 **no ha resuelto el fallo de suspensión**. Los errores de ACPI persisten en los logs y el comportamiento del sistema no ha cambiado.
 
 Dado que la vía de una solución por parte del fabricante (actualización de firmware) ha fallado, la siguiente estrategia es intentar que el sistema operativo (Linux) ignore o mitigue estos errores de la BIOS. Esto se puede lograr mediante **parámetros de arranque del kernel**.
-
-### Estrategia de Mitigación: Pruebas con Parámetros de Arranque del Kernel
-
-Se probarán diferentes parámetros de arranque del kernel, uno por uno, para aislar cuál de ellos (si alguno) tiene un efecto positivo.
-
-#### Cómo Probar Parámetros de Forma Temporal
-
-Para no hacer cambios permanentes en cada prueba, los parámetros se añadirán de forma temporal en el menú de arranque de GRUB:
-
-1.  Reiniciar el ordenador.
-2.  Cuando aparezca el menú de GRUB, presionar la tecla `e` para editar la entrada de arranque de Debian.
-3.  Localizar la línea que empieza con `linux` (suele ser larga y terminar con `quiet splash`).
-4.  Mover el cursor al final de esa línea y añadir el parámetro a probar (por ejemplo, `acpi_osi=Linux`).
-5.  Presionar `Ctrl+X` o `F10` para arrancar con el parámetro añadido.
-6.  Una vez en el sistema, realizar la prueba de suspensión (`systemctl suspend`), reanudar y verificar el resultado.
-
-Este método es seguro, ya que el cambio solo dura para ese arranque.
-
-#### Parámetros Candidatos a Probar
-
-A continuación se listan los parámetros que se probarán, del más probable al menos probable, junto con la justificación de cada uno.
-
-**1. `acpi_osi=` (Operating System Interface)**
-
--   **Parámetro a probar:** `acpi_osi='!Windows 2020'`
--   **Justificación:** Muchas BIOS tienen implementaciones de ACPI optimizadas o probadas únicamente para Windows. Este parámetro le dice a la BIOS "no soy la versión de Windows para la que tienes optimizaciones", lo que puede forzarla a usar un conjunto de funciones ACPI más genérico y estándar, evitando bugs específicos. Es uno de los remedios más comunes para problemas de ACPI en Linux. Si no funciona, se puede probar con `acpi_osi=Linux`.
-
-**2. `acpi_rev_override=1`**
-
--   **Parámetro a probar:** `acpi_rev_override=1`
--   **Justificación:** Este parámetro fuerza al kernel a ignorar la versión de la especificación ACPI reportada por la BIOS. Si la BIOS reporta una versión pero su implementación no se adhiere correctamente a ella, este "override" puede solucionar conflictos.
-
-**3. `nvme_core.default_ps_max_latency_us=5500`**
-
--   **Parámetro a probar:** `nvme_core.default_ps_max_latency_us=5500`
--   **Justificación:** A veces, el problema no está en la GPU sino en el dispositivo de almacenamiento NVMe, que no logra "despertar" a tiempo desde un estado de bajo consumo. Este parámetro limita la profundidad del estado de ahorro de energía del disco NVMe, haciéndolo menos propenso a fallar al reanudar. Un valor de 0 lo desactiva por completo, pero un valor intermedio como `5500` es un buen punto de partida.
-
-**4. `nouveau.modeset=0`**
-
--   **Parámetro a probar:** `nouveau.modeset=0`
--   **Justificación:** Aunque se use el controlador propietario de NVIDIA, el controlador de código abierto `nouveau` puede cargarse en etapas tempranas del arranque e interferir con la gestión de energía. Este parámetro asegura que `nouveau` no intente gestionar el hardware gráfico (`modesetting`), dejando el control total al controlador de NVIDIA y evitando posibles conflictos durante la suspensión/reanudación.
 
 La investigación se centrará ahora en encontrar y probar parámetros que puedan estar relacionados con los errores detectados, tales como:
 - Parámetros para modificar la cadena `_OSI` (`acpi_osi=...`).

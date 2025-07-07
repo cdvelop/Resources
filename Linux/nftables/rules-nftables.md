@@ -18,15 +18,17 @@ table inet filter {
         tcp dport 443 accept     # HTTPS local
         tcp dport 445 accept     # SMB moderno (SMB sobre TCP)
         udp dport 1900 accept    # DLNA SSDP (descubrimiento UPnP)
-        tcp dport 8200 accept    # MiniDLNA (puedes agregar otros puertos si tu servidor DLNA usa diferentes)
+        tcp dport 8200 accept    # MiniDLNA
     }
     chain forward {
         type filter hook forward priority 0;
         policy drop;
-        # Permite tráfico Docker (NAT y bridge)
         ct state established,related accept
         iif "docker0" accept
         oif "docker0" accept
+        # Permite todas las redes bridge de Docker
+        iifname "br-*" accept
+        oifname "br-*" accept
     }
     chain output {
         type filter hook output priority 0;
@@ -34,7 +36,7 @@ table inet filter {
     }
 }
 EOF
-nft flush ruleset
+nft flush table inet filter
 nft -f /etc/nftables.conf
 '
 ```
@@ -80,7 +82,7 @@ table inet filter {
     }
 }
 EOF
-nft flush ruleset
+nft flush table inet filter
 nft -f /etc/nftables.conf
 '
 ```
@@ -109,7 +111,7 @@ table inet filter {
     }
 }
 EOF
-nft flush ruleset
+nft flush table inet filter
 nft -f /etc/nftables.conf
 '
 ```

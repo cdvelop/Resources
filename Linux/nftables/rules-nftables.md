@@ -1,6 +1,8 @@
 ## Ejemplo Aplicar reglas básicas de nftables automáticamente
 
-#### Ejemplo 1: Reglas para laptop de desarrollo y uso general (SMB, SSH, DLNA, web local)
+#### Ejemplo 1: Reglas para laptop de desarrollo y uso general (SMB, SSH, DLNA, web local) **y compatibilidad con Docker**
+
+> **Incluye reglas para permitir que los contenedores Docker tengan acceso a internet y funcionen correctamente.**
 
 ```bash
 sudo bash -c '
@@ -21,6 +23,10 @@ table inet filter {
     chain forward {
         type filter hook forward priority 0;
         policy drop;
+        # Permite tráfico Docker (NAT y bridge)
+        ct state established,related accept
+        iif "docker0" accept
+        oif "docker0" accept
     }
     chain output {
         type filter hook output priority 0;
@@ -28,9 +34,18 @@ table inet filter {
     }
 }
 EOF
+nft flush ruleset
 nft -f /etc/nftables.conf
 '
 ```
+
+**Explicación de las reglas Docker:**
+
+- `iif "docker0" accept` y `oif "docker0" accept` en la cadena `forward` permiten el tráfico de red entre el host y los contenedores Docker, así como el acceso a internet desde los contenedores.
+- `ct state established,related accept` permite el tráfico relacionado y ya establecido, necesario para conexiones correctas.
+- No es necesario abrir puertos adicionales para Docker salvo que expongas servicios específicos (puedes agregar más reglas en `input` si necesitas exponer puertos de contenedores).
+
+> **Recuerda:** Si usas otras redes bridge personalizadas de Docker, agrega también sus nombres (por ejemplo, `iif "br-xxxx" accept`).
 >compatibilidad equipos antiguos (windows)
  tcp dport 139 accept     # SMB sobre NetBIOS 
  udp dport 137 accept     # NetBIOS Name Service(descubrimiento)
@@ -65,6 +80,7 @@ table inet filter {
     }
 }
 EOF
+nft flush ruleset
 nft -f /etc/nftables.conf
 '
 ```
@@ -93,6 +109,7 @@ table inet filter {
     }
 }
 EOF
+nft flush ruleset
 nft -f /etc/nftables.conf
 '
 ```

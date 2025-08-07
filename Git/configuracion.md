@@ -10,6 +10,9 @@ git config --global user.name "Juanita Lopez"
 git config --global user.email "juanita.lopez@correo.com"
 
 ## ver configuración 
-git config --list
+```bash
+git config --global --list
+```
+
 
 

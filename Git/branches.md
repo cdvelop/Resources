@@ -107,4 +107,49 @@ git pull origin main --allow-unrelated-histories
     git push origin main
     ```
 ### si te aparece uun cuadro de texto
+![allow-unrelated-histories](allow-unrelated-histories.png)
+
+Lo que te salió en pantalla es el **editor de mensajes de commit** (`nano` u otro).
+al ejecutar:
+
+```bash
+git pull origin main --allow-unrelated-histories
+```
+
+Git intentó **fusionar** el historial de tu proyecto local con el del repositorio remoto (porque no comparten el mismo origen), y ahora te pide que escribas un mensaje para el commit de merge.
+
+---
+
+### 🔧 Qué hacer ahora
+
+En `nano` tienes varias opciones:
+
+1. **Aceptar el mensaje por defecto** (lo que aparece arriba: `"Merge branch 'main' of ..."`):
+
+   * Simplemente presiona `Ctrl + O` (para guardar), luego `Enter`, y después `Ctrl + X` (para salir).
+   * Esto confirmará el merge.
+
+2. **Personalizar el mensaje**:
+
+   * Puedes escribir algo más descriptivo arriba, por ejemplo:
+
+     ```
+     Fusionando proyecto local con repositorio remoto (main)
+     ```
+   * Luego igual haces `Ctrl + O`, `Enter`, `Ctrl + X`.
+
+3. **Cancelar el merge**:
+
+   * Si decides que no quieres continuar, puedes salir con `Ctrl + X` sin guardar.
+   * El merge quedará abortado y tu repo volverá al estado previo.
+
+---
+
+### ⚡ Recomendación
+
+Como es la primera unión de dos historiales distintos, puedes aceptar el mensaje por defecto.
+Después de salir de `nano`, Git completará el **commit de merge**, y tendrás ya tu rama `main` sincronizada (aunque puede que haya conflictos a resolver si archivos coinciden).
+
+---
+
 

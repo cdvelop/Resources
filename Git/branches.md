@@ -83,3 +83,28 @@ git config --global init.defaultBranch
 git config --global init.defaultBranch main
 
 
+## fusionar 2 ramas con diferente inicializacion
+```sh
+git pull origin main --allow-unrelated-histories
+```
+### Explicación de --allow-unrelated-histories:
+    •Por defecto, Git se niega a fusionar ramas que no comparten un ancestro común porque esto podría ser una señal de que estás intentando fusionar cosas que no deberían estar juntas, lo que podría llevar a un historial desordenado o a la pérdida de trabajo.
+    •La bandera --allow-unrelated-histories le dice a Git: "Entiendo que estas historias no están relacionadas, pero quiero fusionarlas de todas formas".
+    
+### Después de ejecutar este comando:
+    
+    1.Posibles Conflictos: Es muy probable que tengas conflictos de fusión, especialmente si hay archivos con el mismo nombre en ambos historiales (local y remoto). Git intentará fusionar los archivos, pero si encuentra diferencias en las mismas líneas, marcará los archivos como conflictivos.
+    
+    2.Resolución de Conflictos: Si aparecen conflictos, tendrás que resolverlos manualmente como te expliqué en la respuesta anterior:
+        •Abre los archivos conflictivos.    
+        •Busca los marcadores <<<<<<<, =======, >>>>>>>.
+        •Edita los archivos para dejar el contenido deseado.•Guarda los archivos.
+        •Añade los archivos resueltos: git add . (o git add <nombre_del_archivo>).
+        •Crea un commit de fusión: git commit -m "Merge unrelated histories".
+    
+    3.Push Final: Una vez que la fusión se complete (con o sin resolución de conflictos) y hayas hecho el commit de fusión, deberías poder hacer push de tus cambios:
+    ```sh
+    git push origin main
+    ```
+### si te aparece uun cuadro de texto
+

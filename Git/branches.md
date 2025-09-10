@@ -75,3 +75,11 @@ git branch -u origin/nuevo-nombre
 ```
 
 Así, la referencia local se actualizará con la nueva rama en el remoto. 🚀
+
+## ver rama por defecto configurada a nivel global
+git config --global init.defaultBranch
+
+>si no aparece nada hay que establecerla
+git config --global init.defaultBranch main
+
+

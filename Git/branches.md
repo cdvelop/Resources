@@ -106,7 +106,7 @@ git pull origin main --allow-unrelated-histories
     ```sh
     git push origin main
     ```
-### si te aparece uun cuadro de texto
+### si te aparece un cuadro de texto
 ![allow-unrelated-histories](allow-unrelated-histories.png)
 
 Lo que te salió en pantalla es el **editor de mensajes de commit** (`nano` u otro).

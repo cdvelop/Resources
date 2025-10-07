@@ -30,7 +30,7 @@ En tu proyecto (por ejemplo uno de Go), crea una carpeta `.devcontainer` con est
 ```json
 {
   "name": "Go + Node Dev Environment",
-  "image": "node:22-alpine",
+  "image": "node:22-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/go:1": {
       "version": "1.22"
@@ -69,6 +69,11 @@ En VS Code:
 3. VS Code construirá el contenedor con tu configuración.
 
 Listo: tendrás **Node + Go + npm** listos para usar en un entorno aislado.
+
+## si ocurre error de setting:
+![error-settings-devcontainer](error-settings-devcontainer.png)
+
+>Ese error de “Exit code 1” al crear el Dev Container es bastante común cuando se usa una imagen base ligera (como node:22-alpine) y se agregan features de DevContainers (como Go), porque Alpine no tiene las herramientas necesarias (bash, sudo, apt, etc.), y eso rompe el proceso de inicialización. Solución rápida (recomendada)Usa una imagen base de Node.js basada en Debian, en lugar de node:22-alpine.
 
 Puedes comprobarlo dentro del terminal del contenedor:
 

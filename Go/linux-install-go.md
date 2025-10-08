@@ -1,4 +1,4 @@
-#Instalar go en Linux:
+# Instalar go en Linux:
 
 1. abre tu terminal y ve al directorio descargas
 ```bash
@@ -55,6 +55,7 @@ source ~/.bashrc
 ```
 
 Abre una nueva terminal GNOME y verifica con `echo $PATH` que `/usr/local/go/bin` esté presente. Así el comando `go` funcionará igual en todas tus terminales.
+
 
 
 

@@ -1,18 +1,40 @@
-# instalar go en linux deb:
+#Instalar go en Linux:
 
+1. abre tu terminal y ve al directorio descargas
+```bash
+cd ~/Downloads
+```
 
-1. obtener
-wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz 
+2. obtener go desde la url oficial **https://go.dev/dl/**
+```bash
+wget https://go.dev/dl/go1.25.2.linux-amd64.tar.gz 
+```
 
-2. borrar instalaciones anteriores
+3. borrar instalaciones anteriores si las hay
+```bash
 sudo rm -rf /usr/local/go 
+```
 
-3. instalar
-sudo tar -C /usr/local -xzf go1.22.5.linux-amd64.tar.gz && export PATH=$PATH:/usr/local/go/bin
+4. descomprime y instalar
+```bash
+sudo tar -C /usr/local -xzf go1.25.2.linux-amd64.tar.gz && export PATH=$PATH:/usr/local/go/bin
+```
 
-4. verificar
+5. verificar
+```bash
 go version
+```
 
+6. instalar las herramientas de compilacion (normalmente las instala automaticamente vsc cuando se usa ese editor)
+```bash
+go install golang.org/x/tools/gopls@latest
+```
+
+7. borrar la descarga
+```bash
+rm -rf go1.25.2.linux-amd64.tar.gz
+```
+---
 
 ## Problema: go funciona en la terminal de VS Code pero no en la de GNOME
 
@@ -33,5 +55,6 @@ source ~/.bashrc
 ```
 
 Abre una nueva terminal GNOME y verifica con `echo $PATH` que `/usr/local/go/bin` esté presente. Así el comando `go` funcionará igual en todas tus terminales.
+
 
 

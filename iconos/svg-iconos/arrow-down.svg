@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="arrow"
+   enable-background="new 0 0 512.001 512.001"
+   height="16"
+   viewBox="0 0 16.000031 16.000031"
+   width="16"
+   version="1.1"
+   sodipodi:docname="arrow-down.svg"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)">
+  <defs
+     id="defs9" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="745"
+     id="namedview7"
+     showgrid="false"
+     inkscape:zoom="9.03125"
+     inkscape:cx="-5.823902"
+     inkscape:cy="8.8703844"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="arrow"
+     inkscape:document-rotation="0" />
+  <path
+     fill="#f5f6fa"
+     d="M 1.8800038,3.0600062 8.0000157,9.1666848 14.120028,3.0600062 16.000031,4.9400098 8.0000157,12.940025 2.5e-7,4.9400098 Z"
+     id="path832"
+     style="fill:#000000;stroke-width:1.33334" />
+  <metadata
+     id="metadata849">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

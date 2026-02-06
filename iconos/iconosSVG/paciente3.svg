@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Capa_1"
+   enable-background="new 0 0 512.001 512.001"
+   height="16"
+   viewBox="0 0 16.000031 16.000031"
+   width="16"
+   version="1.1"
+   sodipodi:docname="paciente3.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <defs
+     id="defs9" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="745"
+     id="namedview7"
+     showgrid="false"
+     inkscape:zoom="12.772116"
+     inkscape:cx="2.4529163"
+     inkscape:cy="10.660922"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Capa_1" />
+  <path
+     id="circle884"
+     style="stroke-width:0.753041"
+     d="M 7.9589844 0.0859375 A 3.7652024 3.7652024 0 0 0 4.234375 3.8496094 A 3.7652024 3.7652024 0 0 0 8 7.6152344 A 3.7652024 3.7652024 0 0 0 11.765625 3.8496094 A 3.7652024 3.7652024 0 0 0 8 0.0859375 A 3.7652024 3.7652024 0 0 0 7.9589844 0.0859375 z M 10.556641 8.3535156 C 9.9954653 8.3555257 9.4336979 8.3664922 8.8730469 8.3574219 L 4.4355469 8.3574219 C 2.563243 8.3243765 0.60221807 9.5051619 0.11328125 11.378906 C -0.081245896 12.226672 0.029044898 13.10446 0 13.966797 C 0.0084988482 14.517256 -0.017206154 15.068008 0.013671875 15.617188 C 0.16195033 16.169546 0.79091768 16.08384 1.234375 16.085938 L 15.333984 16.085938 C 15.888789 16.119066 16.064058 15.555181 16 15.109375 C 15.98774 14.026927 16.025862 12.942375 15.976562 11.861328 C 15.771502 9.9945997 14.034988 8.6095883 12.236328 8.4023438 C 11.677227 8.3583919 11.117816 8.3515055 10.556641 8.3535156 z M 9.546875 9.7890625 C 9.6398977 9.7822071 9.7351781 9.7832833 9.828125 9.7949219 C 10.423935 9.6587196 10.854751 10.73393 11.275391 10.253906 C 11.849989 9.6950253 12.848701 9.6152122 13.445312 10.179688 C 14.011441 10.757089 13.94016 11.714538 13.439453 12.308594 C 12.869543 12.966873 12.200984 13.532503 11.585938 14.148438 C 11.381044 14.293158 11.239276 14.61503 10.962891 14.583984 C 10.411062 14.093858 9.8955263 13.559804 9.3574219 13.052734 C 8.7762079 12.522417 8.1167193 11.86954 8.2480469 11.007812 C 8.2825753 10.320413 8.895716 9.8370501 9.546875 9.7890625 z "
+     transform="scale(1.0000019)" />
+  <metadata
+     id="metadata1109">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

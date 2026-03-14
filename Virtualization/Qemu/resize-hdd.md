@@ -10,6 +10,34 @@ qemu-img resize /ruta/al/disco.qcow2 +10G
 ```
 Esto agrega 10 GB al disco. Cambia la ruta y el tamaño según lo que necesites.
 
+### Formatos de disco: qcow2 (dinámico) vs raw (estático)
+
+El comportamiento del resize depende del formato del disco:
+
+**qcow2 (dinámico por defecto):** El archivo solo crece conforme la VM escribe datos. El `+10G` aumenta el tamaño máximo virtual, pero no consume espacio real inmediato en el host.
+
+**raw (estático):** El espacio se reserva inmediatamente en el host. Al hacer `+10G`, el host pierde 10 GB reales.
+
+Para verificar el formato y tamaño real vs virtual:
+```bash
+qemu-img info /ruta/al/disco.qcow2   # muestra formato y tamaño virtual
+du -h /ruta/al/disco.qcow2            # tamaño real ocupado en el host
+```
+
+| | **qcow2 (dinámico)** | **raw (estático)** |
+|---|---|---|
+| Espacio en host | Solo usa lo que necesita | Reserva todo de golpe |
+| Rendimiento I/O | ~5-10% más lento | Más rápido (sin overhead) |
+| Snapshots | Soporta snapshots nativos | No soporta |
+| Fragmentación | Se fragmenta con el tiempo | No se fragmenta |
+| Riesgo | Puedes sobrecomprometer el host y quedarte sin espacio | Nunca te sorprende |
+
+Para convertir de raw a qcow2 (VM apagada):
+```bash
+qemu-img convert -f raw -O qcow2 /ruta/disco.raw /ruta/disco.qcow2
+```
+Luego actualiza la configuración de la VM para apuntar al nuevo archivo.
+
 3. **Inicia la máquina virtual**.
 
 ## Dentro de la VM - Linux (Debian/Ubuntu)

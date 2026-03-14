@@ -1,90 +1,119 @@
-# Configurar el intercambio de archivos entre tu Debian 12 host y una VM KVM con Windows 10. Hay varias opciones disponibles:
+# Compartir archivos entre Debian 12 (host) y Windows 10 (VM KVM)
 
-## 1. SPICE con Drag & Drop (Similar a VirtualBox)
+## Resumen comparativo
 
-La forma más parecida a VirtualBox es usar SPICE con las herramientas de guest:
+| Opcion        | Facilidad | Rendimiento | Persistente | Requiere red |
+|---------------|-----------|-------------|-------------|--------------|
+| Samba/CIFS    | Alta      | Alto        | Si          | Si (virtual) |
+| SPICE D&D     | Alta      | Bajo        | No          | No           |
+| SSH/SFTP      | Media     | Alto        | Si          | Si (virtual) |
+| 9p/virtio-fs  | Baja      | Alto        | Si          | No           |
 
-**En el host (Debian 12):**
+---
+
+## Opcion recomendada: Samba/CIFS
+
+La mejor opcion para Windows 10 en KVM. Windows tiene soporte nativo para SMB, se integra directo en el Explorador de archivos como una unidad de red, y el rendimiento es bueno para cualquier tamano de archivo.
+
+### Paso 1: Instalar y configurar Samba en el host
+
 ```bash
-# Instalar virt-viewer si no lo tienes
-sudo apt install virt-viewer spice-client-gtk
-
-# Conectar a la VM con SPICE
-virt-viewer --connect qemu:///system nombre-de-tu-vm
-```
-
-**En la VM Windows 10:**
-1. Descarga e instala **spice-guest-tools** desde: https://www.spice-space.org/download.html
-2. Reinicia la VM
-3. Después podrás arrastrar y soltar archivos entre host y VM
-
-## 2. Carpeta Compartida con 9p/virtio-fs
-
-**Modifica la configuración de tu VM:**
-```bash
-# Editar la VM
-sudo virsh edit nombre-de-tu-vm
-```
-
-Añade esta sección dentro de `<devices>`:
-```xml
-<filesystem type='mount' accessmode='passthrough'>
-  <source dir='/ruta/en/host/compartida'/>
-  <target dir='shared'/>
-  <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
-</filesystem>
-```
-
-**En Windows 10:**
-La carpeta aparecerá como una unidad de red que puedes mapear.
-
-## 3. Samba/CIFS (Red)
-
-**En el host (Debian 12):**
-```bash
-# Instalar Samba
 sudo apt install samba
-
-# Crear carpeta compartida
-mkdir -p /home/usuario/compartido
-
-# Configurar Samba
-sudo nano /etc/samba/smb.conf
+mkdir -p /home/<user_name>/Share
 ```
 
-Añade al final:
+Editar `/etc/samba/smb.conf` y agregar al final:
+
 ```ini
-[compartido]
-path = /home/usuario/compartido
+# [nombre_recurso] → este nombre es el que se usa en Windows: \\IP\nombre_recurso
+[Share]
+path = /home/<user_name>/Share
 browseable = yes
 writable = yes
 guest ok = yes
 read only = no
 ```
 
-```bash
-# Reiniciar Samba
-sudo systemctl restart smbd
+Se pueden agregar multiples recursos, cada uno con su propio bloque:
+
+```ini
+# Segundo recurso de ejemplo (puede ser cualquier directorio del sistema)
+[Datos]
+path = /opt/datos
+browseable = yes
+writable = yes
+guest ok = yes
+read only = no
 ```
 
-**En Windows 10:**
-- Abre el Explorador
-- Ve a "Red" y busca tu host Debian
-- O mapea directamente: `\\IP-del-host\compartido`
+Cada bloque `[nombre]` genera una ruta independiente en Windows: `\\IP\Share`, `\\IP\Datos`, etc.
 
-## 4. SSH/SFTP (Recomendado para archivos grandes)
+> Si el path esta fuera de /home, asegurarse de que el usuario tenga permisos:
+> `sudo chown <user_name>:<user_name> /opt/datos`
 
-**En el host:**
+```bash
+# Crear usuario Samba (puede tener contrasena distinta a la de Linux)
+sudo smbpasswd -a <user_name>
+
+sudo systemctl restart smbd
+sudo systemctl enable smbd
+```
+
+### Paso 2: Acceder desde Windows 10
+
+1. Abrir el Explorador de archivos
+2. En la barra de direcciones escribir: `\\IP-del-host\nombre_recurso`
+3. (Opcional) Click derecho > "Conectar a unidad de red" para que sea permanente
+
+Para obtener la IP del host en la red virtual:
+```bash
+ip addr show virbr0
+# Buscar la linea "inet" → ejemplo: inet 192.168.122.1/24
+# La IP del host es 192.168.122.1
+# En Windows escribir: \\192.168.122.1\nombre_recurso
+```
+> Nota: si `virbr0` aparece como `DOWN` o `NO-CARRIER` es normal cuando la VM esta apagada. La IP sigue siendo valida y funcionara al encender la VM.
+
+---
+
+## Alternativas
+
+### SPICE con Drag & Drop
+
+Util para transferencias ocasionales arrastrando archivos. No sirve como carpeta compartida persistente.
+
+**Host:**
+```bash
+sudo apt install virt-viewer spice-client-gtk
+virt-viewer --connect qemu:///system nombre-de-tu-vm
+```
+
+**Windows 10:** Instalar [spice-guest-tools](https://www.spice-space.org/download.html) y reiniciar la VM.
+
+### SSH/SFTP
+
+Buena opcion si ya tienes SSH activo. Requiere un cliente en Windows (WinSCP o FileZilla).
+
+**Host:**
 ```bash
 sudo apt install openssh-server
 sudo systemctl enable --now ssh
 ```
 
-**En Windows 10:**
-- Usa WinSCP, FileZilla, o el explorador de archivos con `sftp://IP-del-host`
+**Windows 10:** Conectar con WinSCP o FileZilla a la IP del host.
 
-## Recomendación
+### 9p/virtio-fs
 
-Para la experiencia más parecida a VirtualBox, usa **SPICE con spice-guest-tools**. Es la opción que te dará drag & drop directo y mejor integración.
+Monta una carpeta del host directamente en la VM. Soporte limitado en Windows (requiere drivers adicionales que pueden dar problemas). No recomendado para Windows.
 
-¿Quieres que te ayude a configurar alguna de estas opciones específicamente?
+```bash
+sudo virsh edit nombre-de-tu-vm
+```
+
+Agregar dentro de `<devices>`:
+```xml
+<filesystem type='mount' accessmode='passthrough'>
+  <source dir='/ruta/en/host/compartida'/>
+  <target dir='shared'/>
+</filesystem>
+```

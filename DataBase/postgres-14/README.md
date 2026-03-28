@@ -32,7 +32,7 @@ Una vez construida la imagen, puedes iniciar un contenedor.
 2.  **Ejecuta este comando** para iniciar el contenedor. Usará el archivo `.env` para la configuración y montará el volumen que creaste:
 
     ```bash
-    docker run --name pg14-dev --restart unless-stopped --env-file .env -p 5432:5432 -v $HOME/Dev/Docker/Volumes/postgres14_volumes/data:/var/lib/postgresql/data -d postgres-replica:14
+    docker run --name pg14-dev --restart unless-stopped --env-file .env -p 127.0.0.1:5432:5432 -v $HOME/Dev/Docker/Volumes/postgres14_volumes/data:/var/lib/postgresql/data -d postgres-replica:14
     ```
 
     **Desglose del comando:**

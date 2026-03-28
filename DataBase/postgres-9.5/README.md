@@ -38,7 +38,7 @@ Una vez construida la imagen, puedes iniciar un contenedor.
 3.  **Ejecuta este comando** para iniciar el contenedor. Usará el archivo `.env` para la configuración y montará el volumen que creaste:
 
     ```bash
-    docker run --name pg95-dev --restart unless-stopped --env-file .env -p 5432:5432 -v $HOME/Dev/Docker/Volumes/posgre95_volumes/data:/var/lib/postgresql/data -d postgres-replica:9.5
+    docker run --name pg95-dev --restart unless-stopped --env-file .env -p 127.0.0.1:5432:5432 -v $HOME/Dev/Docker/Volumes/posgre95_volumes/data:/var/lib/postgresql/data -d postgres-replica:9.5
     ```
 
     **Desglose del comando:**

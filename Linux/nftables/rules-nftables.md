@@ -22,8 +22,12 @@ Configuración base del archivo `nftables.conf`. Ver el archivo para el contenid
 - `iifname "docker0"` / `oifname "docker0"` — red por defecto de Docker
 - `iifname "br-*"` / `oifname "br-*"` — redes bridge personalizadas (`docker network create`)
 
+**Reglas para libvirt (KVM/QEMU):**
+- `iifname "virbr0" accept` en `input` — necesario para que dnsmasq responda DHCP
+- `iifname "virbr0"` / `oifname "virbr0"` en `forward` — VMs accediendo a internet
+
 > Usar siempre `iifname`/`oifname` (match por nombre) y NO `iif`/`oif` (match por índice).
-> Con `iif`/`oif`, si `docker0` no existe al momento del boot, nftables falla con exit 1.
+> Con `iif`/`oif`, si `docker0` o `virbr0` no existen al momento del boot, nftables falla con exit 1.
 
 ---
 
@@ -62,6 +66,42 @@ oif "docker0" accept
 iifname "docker0" accept
 oifname "docker0" accept
 ```
+
+### VMs libvirt sin red (DHCP no responde, sin internet)
+
+**Síntoma:**
+- VM en red `default` (NAT, virbr0) no obtiene IP por DHCP
+- Windows muestra IP APIPA `169.254.x.x`
+- `tcpdump -i virbr0 port 67 or 68` muestra DHCP DISCOVER de la VM pero ningún OFFER del host
+- Con IP estática tampoco hay ping al gateway `192.168.122.1`
+
+**Causa:** Falta regla para `virbr0` en `/etc/nftables.conf`. La tabla `inet filter` con `policy drop` descarta el tráfico aunque libvirt agregue accept en su propia tabla `ip filter` (vía iptables-nft) — en nftables si CUALQUIER tabla hace drop, el paquete se descarta.
+
+**Diagnóstico rápido:**
+```bash
+sudo nft list table inet filter | grep virbr
+# Si no aparece nada → falta la regla
+```
+
+**Solución:** Agregar en `/etc/nftables.conf`:
+```nft
+chain input {
+    ...
+    iifname "virbr0" accept    # DHCP/DNS desde VMs hacia dnsmasq del host
+}
+chain forward {
+    ...
+    iifname "virbr0" accept    # VMs → internet
+    oifname "virbr0" accept    # internet → VMs
+}
+```
+
+Recargar:
+```bash
+sudo systemctl reload nftables   # o: sudo nft -f /etc/nftables.conf
+```
+
+> Lección general: **cualquier nuevo bridge (libvirt, contenedores, VPN, etc.) necesita reglas explícitas** en `inet filter`. Aplica a `virbr0`, `docker0`, `br-*`, y cualquier otro bridge que crees.
 
 ### No guardar nft list ruleset como config
 

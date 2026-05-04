@@ -2,7 +2,7 @@
 
 ## Problema
 
-En Debian 12, las VMs creadas con virt-manager pierden internet cuando el host no tiene cable ethernet conectado (ej: usando solo WiFi en laptop).
+En Debian 12/13, las VMs creadas con virt-manager pierden internet cuando el host no tiene cable ethernet conectado (ej: usando solo WiFi en laptop).
 
 Esto ocurre porque la red virtual esta configurada en modo bridge atado a la interfaz ethernet. Cuando esa interfaz baja, las VMs quedan sin red.
 
@@ -149,3 +149,94 @@ sudo nmcli connection delete br0
 sudo nmcli connection delete br0-port1
 sudo nmcli connection add type ethernet con-name "Ethernet" ifname eno1
 ```
+
+## Troubleshooting: dnsmasq no responde DHCP (Debian 13)
+
+En Debian 13 (Trixie) puede ocurrir que dnsmasq de libvirt no responda a los DHCP Discover de las VMs, dejandolas sin IP (169.254.x.x / APIPA).
+
+### Sintomas
+
+- La VM envia DHCP Discover (visible con `tcpdump -i virbr0 -n port 67 or port 68`) pero no recibe DHCP Offer
+- `sudo virsh domifaddr nombre-vm` no muestra IP
+- La VM obtiene IP APIPA (169.254.x.x)
+
+### Diagnostico
+
+```bash
+# Verificar que dnsmasq esta corriendo
+sudo ps aux | grep dnsmasq
+
+# Verificar que escucha en virbr0
+sudo ss -ulnp | grep 67
+
+# Verificar que el archivo de leases existe
+ls -la /var/lib/libvirt/dnsmasq/default.leases
+
+# Capturar trafico DHCP
+sudo tcpdump -i virbr0 -n port 67 or port 68 -v
+```
+
+### Solucion 1: Recrear archivo de leases
+
+Si `/var/lib/libvirt/dnsmasq/default.leases` no existe:
+
+```bash
+sudo touch /var/lib/libvirt/dnsmasq/default.leases
+sudo chmod 644 /var/lib/libvirt/dnsmasq/default.leases
+```
+
+### Solucion 2: Reiniciar red y VMs (importante el orden)
+
+Despues de reiniciar la red virtual, las VMs pierden conexion al bridge (virbr0 queda en estado `NO-CARRIER`/`DOWN`). Es necesario reiniciar las VMs:
+
+```bash
+sudo virsh net-destroy default
+sudo virsh net-start default
+
+# IMPORTANTE: reiniciar las VMs para que se reconecten al bridge
+sudo virsh destroy nombre-vm
+sudo virsh start nombre-vm
+```
+
+Verificar que virbr0 esta UP despues de iniciar las VMs:
+
+```bash
+ip addr show virbr0
+# Debe mostrar: <BROADCAST,MULTICAST,UP,LOWER_UP> state UP
+# Si muestra NO-CARRIER o DOWN, las VMs no estan conectadas
+```
+
+### Solucion 3: IP estatica en la VM (evita DHCP)
+
+Si dnsmasq sigue sin responder, configurar IP estatica dentro de la VM:
+
+**Windows (CMD como administrador):**
+```
+netsh interface ip set address "Ethernet" static 192.168.122.50 255.255.255.0 192.168.122.1
+netsh interface ip set dns "Ethernet" static 8.8.8.8
+netsh interface ip add dns "Ethernet" 1.1.1.1 index=2
+```
+
+**Linux:**
+```bash
+sudo ip addr add 192.168.122.50/24 dev enp1s0
+sudo ip route add default via 192.168.122.1
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+```
+
+### Nota sobre nftables y reinicio de reglas
+
+En Debian 13, `nft list ruleset` puede incluir reglas xtables compat (ej: `xt target "CHECKSUM"`) que no se pueden restaurar con `nft -f`. Si necesitas hacer backup/restore de reglas:
+
+```bash
+# Backup
+sudo nft list ruleset > /tmp/nft-backup.conf
+
+# Si el restore falla por xtables compat, reiniciar los servicios en su lugar:
+sudo systemctl restart libvirtd
+sudo systemctl restart docker
+```
+
+### Nota sobre cambio de modelo de NIC
+
+Al cambiar el modelo de NIC (ej: de `virtio` a `e1000e`), Windows ve un adaptador nuevo. La configuracion de IP del adaptador anterior no se transfiere. Hay que reconfigurar la IP en el nuevo adaptador.

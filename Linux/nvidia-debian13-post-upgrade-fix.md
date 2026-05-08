@@ -276,8 +276,92 @@ Abrir OBS → Configuración → Salida → Codificador de video.
 
 **Resultado Obtenido:**
 ```
-(pendiente — confirmar en OBS)
+NVENC H.264 disponible ✓
 ```
+
+---
+
+## Incidencia #2 — 2026-05-08 (kernel 6.12.86)
+
+### Síntoma
+
+Tras `sudo apt upgrade`, el sistema actualizó el kernel de `6.12.85` a `6.12.86` y el módulo nvidia dejó de cargar al reiniciar. Mismo síntoma que la incidencia anterior.
+
+### Causa Raíz Real (causa estructural)
+
+El diagnóstico de la incidencia #1 resolvió el síntoma inmediato pero no la causa de fondo.
+
+Durante el upgrade Debian 12 → 13, el meta-paquete **`linux-headers-amd64`** de bookworm fue desinstalado pero el de trixie **nunca se instaló para reemplazarlo**. Quedó un hueco:
+
+| Meta-paquete | Estado encontrado | Correcto |
+|---|---|---|
+| `linux-image-amd64` | `6.12.86-1` instalado ✓ | Instalado, sigue al kernel de trixie |
+| `linux-headers-amd64` | **no instalado** (solo registro residual de bookworm en dpkg) | Debería estar instalado y seguir al kernel de trixie |
+
+Sin este meta-paquete, cada vez que el kernel sube de versión (`.85 → .86 → .87...`) **`apt upgrade` instala el nuevo kernel pero no los nuevos headers**. DKMS no puede recompilar nvidia → módulo no carga al reiniciar.
+
+### Por qué se repite el problema
+
+```
+apt upgrade → instala linux-image-6.12.86  (sí, via meta-paquete)
+           → NO instala linux-headers-6.12.86  (meta-paquete roto)
+           → DKMS no recompila nvidia
+           → reboot → nvidia no carga
+```
+
+### Solución aplicada
+
+**Paso 1 — Arreglar kernel actual** (instalar headers + recompilar nvidia):
+
+```bash
+sudo apt install linux-headers-$(uname -r)
+```
+
+DKMS compiló automáticamente al instalar los headers:
+```
+Autoinstall on 6.12.86+deb13-amd64 succeeded for module(s) nvidia-current v4l2loopback.
+```
+
+**Paso 2 — Fix permanente** (instalar meta-paquete de trixie):
+
+```bash
+sudo apt install linux-headers-amd64
+```
+
+Resultado: `linux-headers-amd64 6.12.86-1` instalado. A partir de ahora, cuando el kernel se actualice, apt jalará los headers automáticamente y DKMS recompilará nvidia sin intervención.
+
+**Paso 3 — Actualizar initramfs y reiniciar:**
+
+```bash
+sudo update-initramfs -u && sudo reboot
+```
+
+### Verificación post-reinicio
+
+```bash
+nvidia-smi
+```
+
+**Resultado:**
+```
+Fri May  8 19:10:28 2026
+NVIDIA-SMI 550.163.01   Driver Version: 550.163.01   CUDA Version: 12.4
+GPU: NVIDIA GeForce RTX 3060 — 39°C — 9MiB / 6144MiB
+```
+
+> Driver 550.163.01 activo ✓ — GPU detectada ✓ — CUDA 12.4 ✓
+
+---
+
+## ⚠️ Causa Raíz Definitiva (resumen)
+
+El upgrade Debian 12 → 13 desinstalló el meta-paquete `linux-headers-amd64` de bookworm sin instalar el de trixie. Esto hace que los headers no se actualicen con el kernel, rompiendo DKMS en cada actualización de kernel.
+
+**Fix de una sola vez:**
+```bash
+sudo apt install linux-headers-amd64
+```
+Esto instala el meta-paquete correcto de trixie y no vuelve a ocurrir.
 
 ---
 
@@ -286,6 +370,7 @@ Abrir OBS → Configuración → Salida → Codificador de video.
 | Fecha | Problema | Causa Raíz | Solución | Estado |
 |-------|----------|------------|----------|--------|
 | 2026-05-04 | NVIDIA no carga, OBS sin NVENC | Headers `6.12.85` faltantes (kernel actualizado sin recompilar módulos) | `apt install linux-headers-$(uname -r) dkms` — DKMS recompiló automáticamente | **RESUELTO** ✓ |
+| 2026-05-08 | NVIDIA no carga tras `apt upgrade` a kernel `6.12.86` | Meta-paquete `linux-headers-amd64` no instalado durante el upgrade a trixie — headers no se actualizaban con el kernel | `apt install linux-headers-$(uname -r)` + `apt install linux-headers-amd64` (fix permanente) | **RESUELTO** ✓ |
 
 ---
 

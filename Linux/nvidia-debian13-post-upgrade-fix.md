@@ -5,6 +5,8 @@
 > GPU: NVIDIA GeForce RTX 3060
 >
 > **Propósito:** Documento de seguimiento paso a paso para identificar la causa raíz y resolverla.
+>
+> **Relacionado con:** [Fix Suspensión y Pérdida de Driver (OBS)](./nvidia-debian13-suspend-obs-fix.md)
 
 ---
 
@@ -371,6 +373,7 @@ Esto instala el meta-paquete correcto de trixie y no vuelve a ocurrir.
 |-------|----------|------------|----------|--------|
 | 2026-05-04 | NVIDIA no carga, OBS sin NVENC | Headers `6.12.85` faltantes (kernel actualizado sin recompilar módulos) | `apt install linux-headers-$(uname -r) dkms` — DKMS recompiló automáticamente | **RESUELTO** ✓ |
 | 2026-05-08 | NVIDIA no carga tras `apt upgrade` a kernel `6.12.86` | Meta-paquete `linux-headers-amd64` no instalado durante el upgrade a trixie — headers no se actualizaban con el kernel | `apt install linux-headers-$(uname -r)` + `apt install linux-headers-amd64` (fix permanente) | **RESUELTO** ✓ |
+| (Bug en Suspensión) | NVIDIA deja de funcionar tras suspender/reanudar la laptop (OBS falla) | NVIDIA no preserva la VRAM por defecto durante suspensión | Habilitar `NVreg_PreserveVideoMemoryAllocations=1` y servicios de systemd | **RESUELTO** ✓ ([Ver Guía](./nvidia-debian13-suspend-obs-fix.md)) |
 
 ---
 

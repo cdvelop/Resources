@@ -51,3 +51,20 @@ También conviene revisar qué versión descargaste:
 
 5- ejecutar pg admin 
 ![pgadmin](pg_pasos/04-pgadmin.png)
+
+6- pgadmin3
+![06-pgadmin3](pg_pasos/06-pgadmin3.png)
+
+7- conexion
+![07-conexion](pg_pasos/07-conexion.png)
+
+8- formulario 
+![08-formulario](pg_pasos/08-formulario.png)
+
+9- advertencia
+![09-advertencia](pg_pasos/09-advertencia.png)
+
+10- finalizacion 
+![fin](pg_pasos/10-fin.png)
+
+

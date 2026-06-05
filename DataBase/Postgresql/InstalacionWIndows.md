@@ -5,3 +5,4 @@
   ![version a descragar](pg_pasos/01-version.png)
 
 ## Paso 2  
+ ![directorio de trabajo](pg_pasos/02-directorio.png)

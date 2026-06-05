@@ -49,4 +49,5 @@ También conviene revisar qué versión descargaste:
 .\bin\postgres.exe --version
 ```
 
-y compartir la salida. Algunas versiones recientes cambiaron opciones de autenticación y podría indicarte exactamente cuál es la sintaxis correcta para tu versión específica.
+5- ejecutar pg admin 
+![pgadmin](pg_pasos/04-pgadmin.png)

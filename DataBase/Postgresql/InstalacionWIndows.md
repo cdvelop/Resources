@@ -9,13 +9,13 @@
 
 ## Paso 3 inicar postgres
 
-### Flujo completo para PostgreSQL "portable" en Windows
-
 1. Crear el clúster de datos:
 
 ```powershell
 .\bin\initdb.exe -D data -U postgres -W -E UTF8
 ```
+![salida esperada](pg_pasos/03-inicio.png)
+
 
 2. Iniciar el servidor:
 

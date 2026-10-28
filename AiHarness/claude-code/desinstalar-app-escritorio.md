@@ -25,10 +25,30 @@ sudo apt remove claude-desktop     # conserva configuración del sistema
 sudo apt purge claude-desktop      # también borra configuración del sistema
 ```
 
-Datos de usuario de la app (opcional):
+### Quitar el repositorio APT (obligatorio si lo añadiste a mano)
+
+El paquete solo limpia lo que él mismo registró. Si seguiste el paso manual de
+la instalación (crear el `.list` y descargar la llave), `apt remove/purge`
+**borra el llavero pero deja el `.list`**, y desde entonces `apt update` falla:
+
+```text
+Failed to parse keyring "/usr/share/keyrings/claude-desktop-archive-keyring.asc":
+No such file or directory
+```
+
+```bash
+ls /etc/apt/sources.list.d/ | grep -i claude
+sudo rm /etc/apt/sources.list.d/claude-desktop.list
+sudo apt update                    # debe terminar sin Err: de downloads.claude.ai
+```
+
+Detalle del error y alternativa: `~/Dev/Resources/Linux/Debian13/claude-desktop-apt-keyring-faltante.md`.
+
+### Datos de usuario de la app (opcional)
 
 ```bash
 ls ~/.config | grep -i claude      # normalmente ~/.config/Claude
+rm -rf ~/.config/Claude            # solo datos de la app de escritorio
 ```
 
 ## 3. Qué NO tocar
